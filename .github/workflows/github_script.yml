@@ -10,13 +10,25 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@0.8.0
+      - name: Comment on new issue
+        uses: actions/github-script@0.8.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
           script: |
             github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              issue_number: 123
+              owner: 'Sam',
+              repo: 'github-script',
               body: "You've created this issue using GitHub Script!"
             })
+      - name: Add issue to project board
+        if: contains(github.event.issues.labels.*.name, 'bug')
+        uses: actions/github-script@0.8.0
+        with:
+          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          script: |
+            github.projects.createCard({
+              column_id: 1,
+              content_id: 1,
+              content_type: "Issue"
+            });
