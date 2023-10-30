@@ -16,7 +16,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.issues.createComment({
-              issue_number: 123
+              issue_number: 123,
               owner: 'Sam',
               repo: 'github-script',
               body: "You've created this issue using GitHub Script!"
